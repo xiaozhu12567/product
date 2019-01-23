@@ -2,4 +2,9 @@
 
 {% block title %}Explore{% end %}
 
-{% block content%}I am Explore{% end %}
+
+{% block content%}I am Explore<br/>
+{% for i in names %}
+<img src="{{ i }}">
+{% end %}
+{% end %}
