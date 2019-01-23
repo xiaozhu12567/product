@@ -5,6 +5,12 @@
     <title>{% block title %}default title{% end %}</title>
 </head>
 <body>
+<div>
+    {# 无需导入，current_user自带 #}
+    {% if current_user %}
+    {{ current_user }}
+    {% end %}
+</div>
 {% block content %}
 {% end %}
 </body>

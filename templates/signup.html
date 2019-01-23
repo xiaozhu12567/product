@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup form{% end %}
+
+{% block content%}
+<div>
+    {% if msg %}
+    <p>
+        {{ msg }}
+    </p>
+    {% end %}
+</div>
+<div class="">
+<form action="/signup" enctype="multipart/form-data" method="post">
+    {% module xsrf_form_html() %}
+    <div class="form-group">
+        用户名：
+        {# autofocus是自动焦点汇聚属性 #}
+        <input autofocus="" class="form-control" id="id_username" maxlength="150" type="text" name="username" required="">
+    </div>
+    <div class="form-group">
+        密码：
+        <input class="form-control" id="id_password1" type="password" name="password1" required="">
+    </div>
+    <div class="form-group">
+        确认密码：
+        <input class="form-control" id="id_password2" type="password" name="password2" required="">
+    </div>
+
+    <button class="btn btn-default">注册</button>
+    <div class="text-center help-text">
+        已经有账号，请<a href="/login">登陆</a>一个
+    </div>
+</form>
+</div>
+{% end %}
