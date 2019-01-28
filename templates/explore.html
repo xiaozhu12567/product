@@ -4,7 +4,7 @@
 
 
 {% block content%}I am Explore<br/>
-{% for i in names %}
-<img src="{{ i }}">
+{% for i in posts %}
+<img src="{{ static_url(i.img_url) }}">
 {% end %}
 {% end %}

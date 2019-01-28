@@ -25,7 +25,7 @@ class Application(tornado.web.Application):
             static_path = 'static',
             cookie_secret='zhujiafu',
             login_url='/login',
-            xsrf_cookies=True,
+            xsrf_cookies=False,
             pycket={
                 'engine': 'redis',  # 设置存储器类型
                 'storage': {

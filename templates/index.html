@@ -3,8 +3,8 @@
 {% block title %}Index{% end %}
 
 {% block content%}I am Login<br/>
-{% for i in names %}
-<img src="{{ i }}">
+{% for i in posts %}
+<img src="{{ static_url(i.img_url) }}">
 {% end %}
 
 {% end %}

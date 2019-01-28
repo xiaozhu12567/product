@@ -2,6 +2,8 @@ import tornado.web
 import glob
 from utils import photo
 from pycket.session import SessionMixin
+from utils.accout import add_post_for, get_post_for, get_post
+from utils.photo import UploadImageSave
 
 class AuthBaseHandler(tornado.web.RequestHandler, SessionMixin):
     """
@@ -17,8 +19,8 @@ class IndexHandler(AuthBaseHandler):
     """
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        names = glob.glob('static/uploads/*.jpg')
-        self.render('index.html', names=names)
+        posts = get_post_for(self.current_user)
+        self.render('index.html', posts=posts)
 
 
 class ExploreHandler(AuthBaseHandler):
@@ -27,9 +29,8 @@ class ExploreHandler(AuthBaseHandler):
     """
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        names = glob.glob('static/uploads/thumbnail/*')
-        print(names)
-        self.render('explore.html', names=names)
+        posts = get_post_for(self.current_user)
+        self.render('explore.html', posts=posts)
 
 
 class PostHandler(AuthBaseHandler):
@@ -38,7 +39,11 @@ class PostHandler(AuthBaseHandler):
     """
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        self.render('post.html', post_id=kwargs['post_id'])
+        post = get_post(kwargs['post_id'])
+        if  post:
+            self.render('post.html', post=post)
+        else:
+            self.write('post id {} is wrong'.format(kwargs['post_id']))
 
 
 class UploadHandler(AuthBaseHandler):
@@ -49,13 +54,17 @@ class UploadHandler(AuthBaseHandler):
     def get(self, *args, **kwargs):
         self.render('upload.html')
 
+    @tornado.web.authenticated
     def post(self, *args, **kwargs):
         file_list = self.request.files.get('newimg', None)
         for upload in file_list:
             name = upload['filename']
             content = upload['body']
-            photo.save_upload(name, content)
-            photo.make_thumb(name, (200,200))
+            ims = UploadImageSave(self.settings['static_path'], name)
+            ims.save_upload(content)
+            ims.make_thumb()
+
+            add_post_for(self.current_user, ims.upload_url, ims.thumb_url)
 
         self.write('upload done')
 

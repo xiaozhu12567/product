@@ -3,6 +3,6 @@
 {% block title %}Post detail page{% end %}
 
 {% block content%}I am post <br/>
-<img src="{{ static_url('images/{}.jpg'.format(post_id))}}">
+<img src="{{ static_url(post.img_url) }}">
 
 {% end %}
