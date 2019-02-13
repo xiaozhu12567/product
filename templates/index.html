@@ -2,9 +2,28 @@
 
 {% block title %}Index{% end %}
 
-{% block content%}I am Login<br/>
-{% for i in posts %}
-<img src="{{ static_url(i.img_url) }}">
-{% end %}
+{% block content%}
+<div class="row">
+    <div class="col col-md-8">
+        {% for i in posts %}
+            <a href="/post/{{ i.id }}">
+            <img src="{{ static_url(i.img_url) }}" class="img-fluid" width="560px">
+            </a>
+        {% end %}
+    </div>
+    <div class="col-md-4 d-none d-md-block">
+        {% if current_user %}
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">当前用户：{{ current_user }}</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">关注</a>
+            </div>
+        </div>
+            I am Login
+        {% end %}
+    </div>
+</div>
 
 {% end %}

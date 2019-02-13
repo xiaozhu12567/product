@@ -2,7 +2,7 @@ import tornado.web
 import glob
 from utils import photo
 from pycket.session import SessionMixin
-from utils.accout import add_post_for, get_post_for, get_post
+from utils.accout import add_post_for, get_post_for, get_post, get_all_posts, get_user, get_like_posts, get_like_count
 from utils.photo import UploadImageSave
 
 class AuthBaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -29,7 +29,7 @@ class ExploreHandler(AuthBaseHandler):
     """
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        posts = get_post_for(self.current_user)
+        posts = get_all_posts()
         self.render('explore.html', posts=posts)
 
 
@@ -40,8 +40,9 @@ class PostHandler(AuthBaseHandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
         post = get_post(kwargs['post_id'])
-        if  post:
-            self.render('post.html', post=post)
+        if post:
+            like_count = get_like_count(post)
+            self.render('post.html', post=post, like_count=like_count)
         else:
             self.write('post id {} is wrong'.format(kwargs['post_id']))
 
@@ -57,6 +58,7 @@ class UploadHandler(AuthBaseHandler):
     @tornado.web.authenticated
     def post(self, *args, **kwargs):
         file_list = self.request.files.get('newimg', None)
+        post_id = 0
         for upload in file_list:
             name = upload['filename']
             content = upload['body']
@@ -64,9 +66,25 @@ class UploadHandler(AuthBaseHandler):
             ims.save_upload(content)
             ims.make_thumb()
 
-            add_post_for(self.current_user, ims.upload_url, ims.thumb_url)
+            post = add_post_for(self.current_user, ims.image_url, ims.thumb_url)
+            post_id = post.id
 
-        self.write('upload done')
+        self.redirect('/post/{}'.format(post_id))
+
+
+class ProfileHandler(AuthBaseHandler):
+    """
+    用户信息页面
+    """
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        username = self.get_argument('name','')
+        if not username:
+            username = self.current_user
+        user = get_user(username)
+        like_posts = get_like_posts(user)
+        self.render('profile.html', user=user, like_posts=like_posts)
+
 
 
 

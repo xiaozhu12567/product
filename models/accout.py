@@ -65,5 +65,16 @@ class Post(Base):
         return '<Post(#{})>'.format(self.id)
 
 
+class Like(Base):
+    """
+    记录用户喜欢的图片信息
+    """
+    __tablename__ = 'likes'
+
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False, primary_key=True)
+    post_id = Column(Integer, ForeignKey('posts.id'), nullable=False, primary_key=True)
+
+
+
 # if __name__ == '__main__':
 #     Base.metadata.create_all()

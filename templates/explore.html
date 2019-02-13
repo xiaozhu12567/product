@@ -5,6 +5,8 @@
 
 {% block content%}I am Explore<br/>
 {% for i in posts %}
-<img src="{{ static_url(i.img_url) }}">
+<a href="/post/{{ i.id }}">
+    <img src="{{ static_url(i.thumb_url) }}">
+</a>
 {% end %}
 {% end %}

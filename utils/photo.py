@@ -39,10 +39,11 @@ class UploadImageSave(object):
         :return:
         """
         _, ext = os.path.splitext(self.name)
-        return uuid.uuid4().hex + ext
+        full_name = uuid.uuid4().hex + ext
+        return full_name
 
     @property       # 方法变成属性来调用
-    def upload_url(self):
+    def image_url(self):
         """
         生成用来保存图片相对路径的URL
         :return:
@@ -51,7 +52,7 @@ class UploadImageSave(object):
 
     @property
     def upload_path(self):
-        return os.path.join(self.static_path, self.upload_url)
+        return os.path.join(self.static_path, self.image_url)
 
 
     def save_upload(self, content):

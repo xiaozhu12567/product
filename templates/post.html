@@ -2,7 +2,10 @@
 
 {% block title %}Post detail page{% end %}
 
-{% block content%}I am post <br/>
+{% block content%}I am post upload by {{ post.user.name }}
+{% if like_count %}
+<i class="fa fa-heart text-danger"></i> {{ like_count }}<br/>
+{% end %}
 <img src="{{ static_url(post.img_url) }}">
 
 {% end %}

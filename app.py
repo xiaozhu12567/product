@@ -4,7 +4,7 @@ import tornado.httpserver   #单线程的HTTP服务
 import tornado.options  # 命令行解析模块，让模块定义自己的选项
 from tornado.options import define, options
 
-from handlers import main, auth
+from handlers import main, auth, chat
 
 define('port', default='8000', help='listening port', type=int)
 
@@ -16,6 +16,9 @@ class Application(tornado.web.Application):
             ('/upload', main.UploadHandler),
             ('/login', auth.LoginHandler),
             ('/signup', auth.SignupHandler),
+            ('/profile', main.ProfileHandler),
+            ('/room', chat.RoomHandler),
+            ('/ws', chat.ChatSocketHandler),
             ('/post/(?P<post_id>[0-9]+)', main.PostHandler),
         ]
 

@@ -50,3 +50,12 @@ target_metadata = Base.metadata
 5）配置完成后，执行
 alembic revision --autogenerate -m "create_user_table"
 alembic upgrade head
+
+Bootstrap4
+https://code.z01.com/v4
+https://code.z01.com/v4/docs/
+https://www.bootcdn.cn
+http://www.fontawesome.com.cn/get-started/
+https://fontawesome.com/v4.7.0/
+https://www.bootcss.com
+fontawesome.io
